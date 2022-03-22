@@ -1,0 +1,13 @@
+[
+  "constructor() payable",
+  "event ERC20PaymentReleased(address indexed,address,uint256)",
+  "event PayeeAdded(address,uint256)",
+  "event PaymentReceived(address,uint256)",
+  "event PaymentReleased(address,uint256)",
+  "function pendingPayment(address) view returns (uint256)",
+  "function release(address) payable",
+  "function released(address) view returns (uint256)",
+  "function shares(address) view returns (uint256)",
+  "function totalReleased() view returns (uint256)",
+  "function totalShares() view returns (uint256)"
+]
