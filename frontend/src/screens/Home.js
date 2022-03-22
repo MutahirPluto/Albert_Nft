@@ -12,7 +12,7 @@ import { connectWallet } from "../utils/connectWallet";
 import { useWeb3React } from "@web3-react/core";
 import {injectedConnector} from "../utils/connectors"
 import NFTSaleAbi from "../contract/NFTsale.json"
-import {nFTpaymentSplitter_addr,nFTsale_addr} from "../contract/addresses"
+import {nFTsale_addr} from "../contract/addresses"  
 import {ethers, BigNumber} from "ethers"
 
 
