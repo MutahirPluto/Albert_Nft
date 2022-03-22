@@ -1,5 +1,9 @@
 [
+<<<<<<< HEAD
   "constructor()",
+=======
+  "constructor(address)",
+>>>>>>> faa9cd970aadaf8db346356d7d0a020959e621f3
   "event OwnershipTransferred(address indexed,address indexed)",
   "function SalePrice() view returns (uint256)",
   "function addressMintedBalance(address) view returns (uint256)",

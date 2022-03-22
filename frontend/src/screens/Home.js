@@ -11,6 +11,9 @@ import Web3Modal from "web3modal";
 import { connectWallet } from "../utils/connectWallet";
 import { useWeb3React } from "@web3-react/core";
 import {injectedConnector} from "../utils/connectors"
+import NFTSaleAbi from "../contract/NFTsale.json"
+import {nFTpaymentSplitter_addr,nFTsale_addr} from "../contract/addresses"
+import {ethers, BigNumber} from "ethers"
 
 
 
@@ -30,6 +33,9 @@ function Home(){
       } = useWeb3React();
 
       const [loaded, setLoaded] = useState(false)
+      const [salePrice, setSalePrice] = useState()
+      const [tokenCount, setTokenCount] = useState()
+      const [qty,setQty] = useState(0);
 
       useEffect(() => {
         injectedConnector
@@ -46,10 +52,7 @@ function Home(){
       }, [activateNetwork, networkActive, networkError])
 
 
-      const handleSubmit = (event) => {
-          connectWallet()
-        event.preventDefault()
-      }
+      
 
     //   const detect = async () => {
     //     const provider = await detectEthereumProvider();
@@ -62,6 +65,76 @@ function Home(){
     //   }
     //   }
     //   detect()
+
+    const loadProvider = async () => {
+      try {
+        const web3Modal = new Web3Modal();
+        const connection = await web3Modal.connect();
+        const provider = new ethers.providers.Web3Provider(connection);
+        return provider.getSigner();
+      } catch (e) {
+        console.log("loadProvider default: ", e);
+      }
+    };
+
+    const getSalePrice = async () => {
+      try{
+        let signer = await loadProvider()
+        let NFTSaleContract = new ethers.Contract(nFTsale_addr, NFTSaleAbi, signer)
+        console.log("NFTSaleContract", NFTSaleContract)
+        let SalePrice = await NFTSaleContract.SalePrice()
+        
+        setSalePrice(ethers.utils.formatEther(SalePrice.toString()))
+
+        // console.log("salePrice", SalePrice)
+      }
+      catch(e){
+        console.log("err>",e)
+      }
+    }
+    // console.log("salePrice", salePrice)
+    // console.log("tokenCount", tokenCount)
+    // console.log("mul",   qty * 0.11)
+
+    const BuyToken = async () => {
+      try{
+        let signer = await loadProvider()
+        let NFTSaleContract = new ethers.Contract(nFTsale_addr, NFTSaleAbi, signer)
+        let mul =  (qty * salePrice).toString()
+        console.log("hdhjk",mul)
+        let _value = ethers.utils.parseEther(mul)
+        console.log("value", _value)
+        let buyToken = await NFTSaleContract.buyToken(qty,{value:_value})
+        await buyToken.wait()
+        console.log("hello")
+      }
+      catch(e) {
+        console.log("err>,", e)
+      }
+    }
+
+    const handleSubmit = async (event) => {
+      connectWallet()
+      event.preventDefault()
+      if(account && qty !== 0){
+        BuyToken()
+        // console.log("tokenCount", qty)
+      }
+      // await getSalePrice()
+  }
+
+  useEffect(() => {
+    (async () => {
+        if (account) {
+            try {
+              getSalePrice()
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    })()
+}, [account]);
+   
 
 
     const settings = {
@@ -87,7 +160,6 @@ function Home(){
         ]
       };
 
-    const [qty,setQty] = useState(0);
 
     const increase = () => {
         
@@ -101,6 +173,9 @@ function Home(){
             setQty(qty - 1)
         }
     };
+
+ 
+    
 
     const calculateTimeLeft = () => {
         let year = new Date().getFullYear();
@@ -206,7 +281,8 @@ function Home(){
                                 <div className="price">
 
                                     <p>Price Per NFT</p>
-                                    <h3>0.11 ETH Each</h3>
+                                    <h3>{salePrice}</h3>
+                                    {/* <h3>{salePrice}</h3> */}
 
                                 </div>
 
@@ -216,7 +292,7 @@ function Home(){
                                 
                                 <div class="increament">
                                     <div class="value-button decrease" id="decrease" value="Decrease Value" onClick={(e)=>decrease()}>-</div>
-                                    <input type="number" id="room-number" value={qty} min="1" max="20" class="number" readOnly/>
+                                    <input type="number" id="room-number" value={qty}  min="1" max="20" class="number" readOnly/>
                                     <div class="value-button increase" id="increase" value="Increase Value" onClick={(e)=>increase()}>+</div>
                                 </div>
 
