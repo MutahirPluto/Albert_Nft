@@ -31,7 +31,8 @@ describe("Albert nft ",  function ()  {
     nFTsale =await NFTsale.deploy(nFTpaymentSplitter.address)
     await nFTsale.deployed()  
     
-
+    let pend = await nFTsale.SalePrice()
+    console.log("pending",pend.toString())
    
   });
  

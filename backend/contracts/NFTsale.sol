@@ -9,18 +9,23 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 
 
+
+
+
+
+
 contract NFTsale is ReentrancyGuard, Ownable {
     
      
     uint256 public total_supply;
     uint256 public maxSupply = 100;
     uint256 public SalePrice = 5;
-    address payable receiver ;
+    address payable receiver1  = payable(address(0x3A057f7612174c20f84EDBf72eC95E2bdA089e6E));
+    address payable receiver2  = payable(address(0xb55fc27c8d39FA19293f4f5920230D3897B13933));
 
     mapping(address => uint256) public addressMintedBalance;
 
-     constructor(address payable pay_)  {
-       receiver = pay_;
+     constructor()  {
     }
 
     function getAmount(uint256 amount) public view 
@@ -35,7 +40,8 @@ contract NFTsale is ReentrancyGuard, Ownable {
         require (weiAmount ==  msg.value,"please provide exact amount for one Token");
         require (total_supply+amount <=  maxSupply,"entered ammount exceed max supply");
         total_supply+=amount;
-        (receiver).transfer(msg.value);
+        (receiver1).transfer(address(this).balance/2);
+        (receiver2).transfer(address(this).balance/2);
         addressMintedBalance[msg.sender] += amount;
     }
 

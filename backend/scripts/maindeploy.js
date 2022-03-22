@@ -34,24 +34,22 @@ async function main() {
   // zpad = await ZPad.deploy();
   // await zpad.deployed();
 
-  NFTpaymentSplitter = await ethers.getContractFactory("NFTpaymentSplitter")
-  nFTpaymentSplitter =await NFTpaymentSplitter.deploy()
-  await nFTpaymentSplitter.deployed()  
+
 
   NFTsale = await ethers.getContractFactory("NFTsale")
-  nFTsale =await NFTsale.deploy(nFTpaymentSplitter.address)
+  nFTsale =await NFTsale.deploy()
   await nFTsale.deployed()  
   // use zpad address
 
-  console.log("TicketConsumer deployed to:", nFTpaymentSplitter.address);
+  
   console.log("nFTsale deployed to:", nFTsale.address);
 
   // We also save the contract's artifacts and address in the frontend directory
-  saveFrontendFiles(nFTpaymentSplitter,nFTsale);
+  saveFrontendFiles(nFTsale);
 }
 //,nftPreSale,nftPubSale,nft
 
-function saveFrontendFiles(nFTpaymentSplitter,nFTsale) {
+function saveFrontendFiles(nFTsale) {
   const fs = require("fs");
   const contractsDir = "../frontend/src/contract";
 
@@ -60,7 +58,7 @@ function saveFrontendFiles(nFTpaymentSplitter,nFTsale) {
   }
 
 let config = `
- export const nFTpaymentSplitter_addr = "${nFTpaymentSplitter.address}"
+ "
  export const nFTsale_addr = "${nFTsale.address}"
 `
 
