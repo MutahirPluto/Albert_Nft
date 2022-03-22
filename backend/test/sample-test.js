@@ -14,16 +14,7 @@ describe("Albert nft ",  function ()  {
   let nFTsale
   let NFTpaymentSplitter
   let nFTpaymentSplitter
-//   let RewardToken
-//   let rewardToken
-//   let TicketConsumer;
-//   let ticketConsumer;
-//   let Factory
-//   let factory
-//   let CrowdSale
-//   let crowdSale
-//   let TokenForSale
-//   let tokenForSale
+
 
 
 //   let [_,per1,per2,per3] = [1,1,1,1]
