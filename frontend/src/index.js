@@ -7,10 +7,14 @@ import './assets/css/responsive.css'
 import reportWebVitals from './reportWebVitals';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import { getLibrary } from './utils/web3Library'
+import { Web3ReactProvider } from '@web3-react/core';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <App />
+    </Web3ReactProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

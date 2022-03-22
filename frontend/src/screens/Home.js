@@ -7,11 +7,62 @@ import slide5 from "../assets/images/slide5.gif"
 import slide6 from "../assets/images/slide6.gif"
 import gif from "../assets/images/gifius.gif"
 import {useEffect, useState } from "react";
+import Web3Modal from "web3modal";
+import { connectWallet } from "../utils/connectWallet";
+import { useWeb3React } from "@web3-react/core";
+import {injectedConnector} from "../utils/connectors"
 
 
 
 
 function Home(){
+
+    const {
+        connector,
+        library,
+        account,
+        chainId,
+        activate,
+        deactivate,
+        active,
+        errorWeb3Modal,
+        active: networkActive, error: networkError, activate: activateNetwork
+      } = useWeb3React();
+
+      const [loaded, setLoaded] = useState(false)
+
+      useEffect(() => {
+        injectedConnector
+          .isAuthorized()
+          .then((isAuthorized) => {
+            setLoaded(true)
+            if (isAuthorized && !networkActive && !networkError) {
+              activateNetwork(injectedConnector)
+            }
+          })
+          .catch(() => {
+            setLoaded(true)
+          })
+      }, [activateNetwork, networkActive, networkError])
+
+
+      const handleSubmit = (event) => {
+          connectWallet()
+        event.preventDefault()
+      }
+
+    //   const detect = async () => {
+    //     const provider = await detectEthereumProvider();
+    
+    //   if (provider) {
+    //     // console.log('Metamask Installed')
+    //     return 
+    //   } else {
+    //     setDetectMetamask("Install Metamask")
+    //   }
+    //   }
+    //   detect()
+
 
     const settings = {
         slidesToShow:3,
@@ -181,13 +232,45 @@ function Home(){
 
                             </div>
 
-                            <input type="submit" className="custom-btn" value="Mint"/>
+                            {/* <input style={{border:"1px solid red"}} onClick={handleSubmit} type="submit" className="custom-btn" value="Mint"/>
 
                             <div className="mint-num">
                                 <span>889</span>
                                 <span>/</span>
                                 <span>1000</span>
-                            </div>
+                            </div> */}
+
+                            {
+           networkError?<button type="button" className="btn-custom secondary-btn">Connect Wallet</button>:
+           active 
+            ? (
+                <div>
+                 <input onClick={handleSubmit} type="submit" className="custom-btn" value="Mint"/>
+                <div className="mint-num">
+                <span>889</span>
+                <span>/</span>
+                <span>1000</span>
+            </div>
+                </div>
+            )
+             : (
+
+                <div>
+                <input   onClick={() => {
+              connectWallet(activate);
+            }} type="submit" className="custom-btn" value="Mint"/>
+               <div className="mint-num">
+               <span>889</span>
+               <span>/</span>
+               <span>1000</span>
+           </div>
+               </div>
+
+            // <div><button onClick={loadProvider} type="button" className="btn-custom secondary-btn">Connect Wallet</button>
+             
+            //  </div>
+            ) 
+         }
 
                         </form>
 
