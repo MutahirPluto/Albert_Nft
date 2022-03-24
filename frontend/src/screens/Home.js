@@ -34,6 +34,8 @@ function Home(){
 
       const [loaded, setLoaded] = useState(false)
       const [salePrice, setSalePrice] = useState()
+      const [supply, setMaxSupply] = useState()
+      const [totalEth, setTotalEth] = useState()
       const [tokenCount, setTokenCount] = useState()
       const [qty,setQty] = useState(0);
 
@@ -83,10 +85,11 @@ function Home(){
         let NFTSaleContract = new ethers.Contract(nFTsale_addr, NFTSaleAbi, signer)
         console.log("NFTSaleContract", NFTSaleContract)
         let SalePrice = await NFTSaleContract.SalePrice()
+        let maxSupply = await NFTSaleContract.maxSupply()
         
         setSalePrice(ethers.utils.formatEther(SalePrice.toString()))
-
-        // console.log("salePrice", SalePrice)
+        setMaxSupply(maxSupply.toString())
+        console.log("maxSupply", maxSupply)
       }
       catch(e){
         console.log("err>",e)
@@ -101,9 +104,9 @@ function Home(){
         let signer = await loadProvider()
         let NFTSaleContract = new ethers.Contract(nFTsale_addr, NFTSaleAbi, signer)
         let mul =  (qty * salePrice).toString()
-        console.log("hdhjk",mul)
+        // console.log("hdhjk",mul)
         let _value = ethers.utils.parseEther(mul)
-        console.log("value", _value)
+        // console.log("value", _value)
         let buyToken = await NFTSaleContract.buyToken(qty,{value:_value})
         await buyToken.wait()
         console.log("hello")
@@ -118,9 +121,7 @@ function Home(){
       event.preventDefault()
       if(account && qty !== 0){
         BuyToken()
-        // console.log("tokenCount", qty)
       }
-      // await getSalePrice()
   }
 
   useEffect(() => {
@@ -253,7 +254,7 @@ function Home(){
 
                         <div>
                             <p>Supply</p>
-                            <span>1000</span>
+                            <span>{supply}</span>
                         </div>
 
                         <div>
@@ -304,7 +305,7 @@ function Home(){
                             <div className="total-mint">
 
                                 <p>Total</p>
-                                <p>0.11 ETH</p>
+                                <p>{qty * salePrice}</p>
 
                             </div>
 
