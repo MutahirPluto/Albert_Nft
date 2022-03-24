@@ -15,6 +15,9 @@ import NFTSaleAbi from "../contract/NFTsale.json"
 import {nFTsale_addr} from "../contract/addresses"  
 import {ethers, BigNumber} from "ethers"
 import {isMobile} from 'react-device-detect';
+import { Container, Form, FormControl, Nav, Navbar,Button, NavDropdown,  Modal } from "react-bootstrap";
+// import WalletConnectProvider from "@walletconnect/web3-provider";
+// import Web3 from "web3"
 
 
 
@@ -24,6 +27,21 @@ import {isMobile} from 'react-device-detect';
 
 
 function Home(){
+
+    
+    // const providerOptions = {
+    //     walletconnect: {
+    //       package: WalletConnectProvider,
+    //       options: {
+    //         rpc: {
+    //           56: 'https://bsc-dataseed1.binance.org'
+    //         },
+    //         chainId: 56
+    //         }
+    //     }
+    // }
+
+      
 
     const {
         connector,
@@ -39,112 +57,27 @@ function Home(){
 
 
       const [loaded, setLoaded] = useState(false)
-      const [salePrice, setSalePrice] = useState()
-      const [supply, setMaxSupply] = useState()
-      const [totalEth, setTotalEth] = useState()
-      const [tokenCount, setTokenCount] = useState()
+      const [salePrice, setSalePrice] = useState("1")
+      const [supply, setMaxSupply] = useState("1")
+      const [totalEth, setTotalEth] = useState("1")
+      const [tokenCount, setTokenCount] = useState("1")
       const [qty,setQty] = useState(0);
-
-      useEffect(() => {
-        injectedConnector
-          .isAuthorized()
-          .then((isAuthorized) => {
-            setLoaded(true)
-            if (isAuthorized && !networkActive && !networkError) {
-              activateNetwork(injectedConnector)
-            }
-          })
-          .catch(() => {
-            setLoaded(true)
-          })
-      }, [activateNetwork, networkActive, networkError])
-
-
-      useEffect(() => {
-       console.log(typeof window !== "undefined" ? window.location.href: "null") 
-      }, []);
+      const [show1, setShow1] = useState(false)
+      const handleClose1 = () => setShow1(false);
+      const handleShow1 = () => setShow1(true);
     
 
 
-    //   const detect = async () => {
-    //     const provider = await detectEthereumProvider();
+      const modalSubmit = () => {
+        handleShow1()
+      }
+
+  
+
+   
+   
+
     
-    //   if (provider) {
-    //     // console.log('Metamask Installed')
-    //     return 
-    //   } else {
-    //     setDetectMetamask("Install Metamask")
-    //   }
-    //   }
-    //   detect()
-
-    const loadProvider = async () => {
-      try {
-        const web3Modal = new Web3Modal();
-        const connection = await web3Modal.connect();
-        const provider = new ethers.providers.Web3Provider(connection);
-        return provider.getSigner();
-      } catch (e) {
-        console.log("loadProvider default: ", e);
-      }
-    };
-
-    const getSalePrice = async () => {
-      try{
-        let signer = await loadProvider()
-        let NFTSaleContract = new ethers.Contract(nFTsale_addr, NFTSaleAbi, signer)
-        console.log("NFTSaleContract", NFTSaleContract)
-        let SalePrice = await NFTSaleContract.SalePrice()
-        let maxSupply = await NFTSaleContract.maxSupply()
-        
-        setSalePrice(ethers.utils.formatEther(SalePrice.toString()))
-        setMaxSupply(maxSupply.toString())
-        console.log("maxSupply", maxSupply)
-      }
-      catch(e){
-        console.log("err>",e)
-      }
-    }
-    // console.log("salePrice", salePrice)
-    // console.log("tokenCount", tokenCount)
-    // console.log("mul",   qty * 0.11)
-
-    const BuyToken = async () => {
-      try{
-        let signer = await loadProvider()
-        let NFTSaleContract = new ethers.Contract(nFTsale_addr, NFTSaleAbi, signer)
-        let mul =  (qty * salePrice).toString()
-        // console.log("hdhjk",mul)
-        let _value = ethers.utils.parseEther(mul)
-        // console.log("value", _value)
-        let buyToken = await NFTSaleContract.buyToken(qty,{value:_value})
-        await buyToken.wait()
-        console.log("hello")
-      }
-      catch(e) {
-        console.log("err>,", e)
-      }
-    }
-
-    const handleSubmit =  () => {
-      // event.preventDefault()
-      connectWallet()
-      if(account && qty !== 0){
-        BuyToken()
-      }
-  }
-
-  useEffect(() => {
-    (async () => {
-        if (account) {
-            try {
-              getSalePrice()
-            } catch (error) {
-                console.log(error)
-            }
-        }
-    })()
-}, [account]);
    
 
 
@@ -327,41 +260,64 @@ function Home(){
                                 <span>1000</span>
                             </div> */}
 
-                            {
-           networkError?<button type="button" className="btn-custom secondary-btn">Connect Wallet</button>:
-           active 
-            ? (
+                            {/* <button type="button" className="btn-custom secondary-btn">Connect Wallet</button> */}
+          
                 <div>
-                 <input onClick={() => handleSubmit} type="submit" className="custom-btn" value="Mint"/>
+                 <input  type="submit" className="custom-btn" value="Mint" onClick={modalSubmit} />
                 <div className="mint-num">
                 <span>889</span>
                 <span>/</span>
                 <span>1000</span>
             </div>
                 </div>
-            )
-             : (
 
-                <div>
-                <input   onClick={(e) => {
-              connectWallet(activate);
-              e.preventDefault()
-            }} type="submit" className="custom-btn" value="Mint"/>
-               <div className="mint-num">
-               <span>889</span>
-               <span>/</span>
-               <span>1000</span>
-           </div>
-               </div>
+                <Modal show={show1}  onHide={handleClose1}  className='custom-modal' 
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered>
+                                    <Modal.Body style={{ backgroundColor:"#05181f"}}>
+                                    <div style={{textAlign:"center"}}>
+                                       
+                                        <div  style={{display:"flex", flexDirection:"column", justifyContent:"space-between", alignItems:"center"}}>
+                                       
+                                        <div   style={{marginTop:"20px", display:"flex",justifyContent:"space-between" ,alignItems:"center"}}>
+                                        {/* <div style={{ width:"100px"}}>
+                                        <img style={{ marginRight:"13rem"}} src="https://airforshare.com/files/idWtvB.png" width="50%"/>
+                                        </div> */}
+
+                                        <div style={{ width:"100px"}}>
+                                            {window.location.href == "https://albert_nft.surge.sh/" ? <a href = "https://metamask.app.link/dapp/albert_nft.surge.sh/">
+                                            <img style={{ marginRight:"13rem"}} src="https://airforshare.com/files/idWtvB.png" width="50%"/>
+                                            </a>: ""}
+                                       
+                                        </div>
+
+                                        <div>
+                                        <span  style={{color:"white"}}>Metamask</span>
+                                        </div>
+                                        </div>
+
+                                        <div style={{marginTop:"20px", display:"flex", alignItems:"center"}}>
+                                        <div style={{ width:"100px"}}>
+                                            {window.location.href == "https://albert_nft.surge.sh/" ? <a href = "https://link.trustwallet.com/open_url?coin_id=60&url=albert_nft.surge.sh/">
+                                            <img style={{ marginRight:"13rem"}} src="https://www.pngkit.com/png/detail/359-3599042_trust-badge-png-trust-wallet-logo.png" width="60%" />
+                                            </a>: ""}
+                                       
+                                        </div>
+                                        <div>
+                                        <span style={{color:"white"}}>TrustWallet</span>
+                                        </div>
+                                        </div>
 
 
-              
+                                        </div>
 
-            // <div><button onClick={loadProvider} type="button" className="btn-custom secondary-btn">Connect Wallet</button>
-             
-            //  </div>
-            ) 
-         }
+                                    </div>
+                                    </Modal.Body>
+                                
+                            </Modal>
+            
+            
+         
 
 
         {/* <div>
