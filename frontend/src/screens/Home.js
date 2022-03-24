@@ -332,10 +332,7 @@ function Home(){
            active 
             ? (
                 <div>
-                  {isMobile == true && window.location.href == "https://albert_nft.surge.sh/" ? <a href="https://metamask.app.link/dapp/albert_nft.surge.sh/">
-                    <input type="submit"  className="custom-btn" value="Mint"/>
-                  </a> : <input onClick={ handleSubmit} type="submit" className="custom-btn" value="Mint"/>}
-                 {/* <input onClick={() => handleSubmit} type="submit" className="custom-btn" value="Mint"/> */}
+                 <input onClick={() => handleSubmit} type="submit" className="custom-btn" value="Mint"/>
                 <div className="mint-num">
                 <span>889</span>
                 <span>/</span>
@@ -369,7 +366,7 @@ function Home(){
 
         <div>
                 {
-                        isMobile == true && window.location.href == "http://192.168.18.131:3000/" ? <a href="https://metamask.app.link/dapp/albert_nft.surge.sh/">
+                        isMobile == true && window.location.href == "https://albert_nft.surge.sh/" ? <a href="https://metamask.app.link/dapp/albert_nft.surge.sh/">
                         <button  >
                           Connect to MetaMask
                         </button>
