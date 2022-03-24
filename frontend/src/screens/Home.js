@@ -332,7 +332,9 @@ function Home(){
            active 
             ? (
                 <div>
-                  {isMobile == true && window.location.href == "https://albert_nft.surge.sh/" ? <a href="https://metamask.app.link/dapp/albert_nft.surge.sh/" /> : <input onClick={ handleSubmit} type="submit" className="custom-btn" value="Mint"/>}
+                  {isMobile == true && window.location.href == "https://albert_nft.surge.sh/" ? <a href="https://metamask.app.link/dapp/albert_nft.surge.sh/">
+                    <input type="submit" className="custom-btn" value="Mint"/>
+                  </a> : <input onClick={ handleSubmit} type="submit" className="custom-btn" value="Mint"/>}
                  {/* <input onClick={() => handleSubmit} type="submit" className="custom-btn" value="Mint"/> */}
                 <div className="mint-num">
                 <span>889</span>
