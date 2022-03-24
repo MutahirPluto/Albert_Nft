@@ -14,6 +14,11 @@ import {injectedConnector} from "../utils/connectors"
 import NFTSaleAbi from "../contract/NFTsale.json"
 import {nFTsale_addr} from "../contract/addresses"  
 import {ethers, BigNumber} from "ethers"
+import {isMobile} from 'react-device-detect';
+
+
+
+
 
 
 
@@ -31,6 +36,7 @@ function Home(){
         errorWeb3Modal,
         active: networkActive, error: networkError, activate: activateNetwork
       } = useWeb3React();
+
 
       const [loaded, setLoaded] = useState(false)
       const [salePrice, setSalePrice] = useState()
@@ -54,7 +60,11 @@ function Home(){
       }, [activateNetwork, networkActive, networkError])
 
 
-      
+      useEffect(() => {
+       console.log(typeof window !== "undefined" ? window.location.href: "null") 
+      }, []);
+    
+
 
     //   const detect = async () => {
     //     const provider = await detectEthereumProvider();
@@ -117,8 +127,8 @@ function Home(){
     }
 
     const handleSubmit = async (event) => {
-      connectWallet()
       event.preventDefault()
+      connectWallet()
       if(account && qty !== 0){
         BuyToken()
       }
@@ -322,7 +332,8 @@ function Home(){
            active 
             ? (
                 <div>
-                 <input onClick={handleSubmit} type="submit" className="custom-btn" value="Mint"/>
+                  {isMobile == true && window.location.href == "https://albert_nft.surge.sh/" ? <a href="https://metamask.app.link/dapp/albert_nft.surge.sh/" /> : <input onClick={ handleSubmit} type="submit" className="custom-btn" value="Mint"/>}
+                 {/* <input onClick={() => handleSubmit} type="submit" className="custom-btn" value="Mint"/> */}
                 <div className="mint-num">
                 <span>889</span>
                 <span>/</span>
@@ -333,8 +344,9 @@ function Home(){
              : (
 
                 <div>
-                <input   onClick={() => {
+                <input   onClick={(e) => {
               connectWallet(activate);
+              e.preventDefault()
             }} type="submit" className="custom-btn" value="Mint"/>
                <div className="mint-num">
                <span>889</span>
