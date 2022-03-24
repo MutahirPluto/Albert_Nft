@@ -283,7 +283,7 @@ function Home(){
 
                         <h1>Bonus Sale</h1>
 
-                        <form>
+                        {/* <form> */}
 
                             <div className="price-per-nft">
 
@@ -357,13 +357,20 @@ function Home(){
            </div>
                </div>
 
+
+              
+
             // <div><button onClick={loadProvider} type="button" className="btn-custom secondary-btn">Connect Wallet</button>
              
             //  </div>
             ) 
          }
 
-                        </form>
+        
+
+                        {/* </form> */}
+
+                          
 
                     </div>
                     
