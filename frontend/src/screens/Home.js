@@ -126,8 +126,8 @@ function Home(){
       }
     }
 
-    const handleSubmit = async (event) => {
-      event.preventDefault()
+    const handleSubmit =  () => {
+      // event.preventDefault()
       connectWallet()
       if(account && qty !== 0){
         BuyToken()
@@ -333,7 +333,7 @@ function Home(){
             ? (
                 <div>
                   {isMobile == true && window.location.href == "https://albert_nft.surge.sh/" ? <a href="https://metamask.app.link/dapp/albert_nft.surge.sh/">
-                    <input type="submit" className="custom-btn" value="Mint"/>
+                    <input type="submit"  className="custom-btn" value="Mint"/>
                   </a> : <input onClick={ handleSubmit} type="submit" className="custom-btn" value="Mint"/>}
                  {/* <input onClick={() => handleSubmit} type="submit" className="custom-btn" value="Mint"/> */}
                 <div className="mint-num">
@@ -366,6 +366,16 @@ function Home(){
             ) 
          }
 
+
+        <div>
+                {
+                        isMobile == true && window.location.href == "http://192.168.18.131:3000/" ? <a href="https://metamask.app.link/dapp/albert_nft.surge.sh/">
+                        <button  >
+                          Connect to MetaMask
+                        </button>
+                    </a> : console.log("sorry")
+                      }
+                </div>
         
 
                         {/* </form> */}
