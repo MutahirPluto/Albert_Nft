@@ -19,8 +19,8 @@ contract NFTsale is ReentrancyGuard, Ownable {
      
     uint256 public total_supply;
     uint256 public maxSupply = 100;
-    uint256 public SalePrice = 0.5 ether;
-    address payable receiver1  = payable(address(0x3b9bA781797b57872687Ce5d5219A1A4Bc0e85ea));
+    uint256 public SalePrice = 0.01 ether;
+    address payable receiver1  = payable(address(0x3B2FA3fB4c7eD3bC495F276DC60782b635bB04d9));
     address payable receiver2  = payable(address(0xb55fc27c8d39FA19293f4f5920230D3897B13933));
 
     mapping(address => uint256) public addressMintedBalance;

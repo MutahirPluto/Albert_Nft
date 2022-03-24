@@ -1,3 +1,3 @@
 
  
- export const nFTsale_addr = "0x058ADCeB4B28334f2a134f177f0a8D560675F40c"
+ export const nFTsale_addr = "0x01aFD7463641AC1aEf86DF64042FC44B2748f03C"
