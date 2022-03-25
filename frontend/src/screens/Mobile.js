@@ -286,7 +286,7 @@ function Home(){
 
                                         <div style={{ width:"100px"}}>
                                             {window.location.href == "https://albert_nft.surge.sh/" ? <a href = "https://metamask.app.link/dapp/albert_nft.surge.sh/">
-                                            <img style={{ marginRight:"13rem"}} src="https://airforshare.com/files/idWtvB.png" width="50%"/>
+                                            <img style={{ marginRight:"13rem"}} src="https://spng.pngfind.com/pngs/s/472-4724730_metamask-red-fox-hd-png-download.png" width="50%"/>
                                             </a>: ""}
                                        
                                         </div>

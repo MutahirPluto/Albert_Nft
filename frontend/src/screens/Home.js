@@ -132,6 +132,7 @@ function Home(){
       if(account && qty !== 0){
         BuyToken()
       }
+      console.log("hello")
   }
 
   useEffect(() => {
@@ -332,7 +333,7 @@ function Home(){
            active 
             ? (
                 <div>
-                 <input onClick={() => handleSubmit} type="submit" className="custom-btn" value="Mint"/>
+                 <button onClick={ handleSubmit}  className="custom-btn">Mint</button>
                 <div className="mint-num">
                 <span>889</span>
                 <span>/</span>
@@ -344,7 +345,7 @@ function Home(){
 
                 <div>
                 <input   onClick={(e) => {
-              connectWallet(activate);
+              connectWallet(activate, "Error");
               e.preventDefault()
             }} type="submit" className="custom-btn" value="Mint"/>
                <div className="mint-num">
