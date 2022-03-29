@@ -157,7 +157,7 @@ function Mobile() {
     })
 
     const onBoard = Onboard({
-        wallets: [injected, walletConnect],
+        wallets: [injected],
         chains: [
             {
                 id: '0x1',
