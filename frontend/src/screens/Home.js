@@ -17,6 +17,7 @@ import {ethers, BigNumber} from "ethers"
 import {isMobile} from 'react-device-detect';
 
 
+const apiUrl = process.env.REACT_APP_API_URL + "/api"
 
 
 
@@ -24,6 +25,9 @@ import {isMobile} from 'react-device-detect';
 
 
 function Home(){
+
+
+
 
     const {
         connector,
@@ -40,10 +44,26 @@ function Home(){
 
       const [loaded, setLoaded] = useState(false)
       const [salePrice, setSalePrice] = useState()
-      const [supply, setMaxSupply] = useState()
+      const [supplyy, setMaxSupply] = useState()
       const [totalEth, setTotalEth] = useState()
       const [tokenCount, setTokenCount] = useState()
       const [qty,setQty] = useState(0);
+
+      const [supply, setSupply] = useState()
+      const [price, setPrice] = useState()
+      const [max, setMax] = useState()
+      const [barImage, setBarImage] = useState()
+      const [backgroundImage, setBackgroundImage] = useState()
+      const [headContent, setHeadContent] = useState()
+      const [timerShow, setTimerShow] = useState(false)
+      const [timer, setTimer] = useState()
+
+      const [sliderImages, setSliderImages] = useState([{
+        id: "",
+        heading: "",
+        image: "",
+        img_src: ""
+    }])
 
       useEffect(() => {
         injectedConnector
@@ -150,7 +170,7 @@ function Home(){
 
 
     const settings = {
-        slidesToShow:3,
+      slidesToShow: sliderImages.length - 1,
         autoplay:true,
         autoplaySpeed:0,
         speed:2000,
@@ -209,27 +229,62 @@ function Home(){
 
       const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
-      useEffect(() => {
-        const timer = setTimeout(() => {
-          setTimeLeft(calculateTimeLeft());
+       useEffect(() => {
+        const timerId = setTimeout(() => {
+            setTimeLeft(calculateTimeLeft());
         }, 1000);
+
+        return () => clearTimeout(timerId);
+    });
+
+      // useEffect(() => {
+      //   const timer = setTimeout(() => {
+      //     setTimeLeft(calculateTimeLeft());
+      //   }, 1000);
       
-        return () => clearTimeout(timer);
-      });
+      //   return () => clearTimeout(timer);
+      // });
 
-      const timerComponents = [];
-
-      Object.keys(timeLeft).forEach((interval) => {
+      const timerComponents = Object.keys(timeLeft).map((interval) => {
         if (!timeLeft[interval]) {
-          return;
+            return;
         }
+
+        return <span className="timer-inner">
+            {timeLeft[interval]} <br />{interval}{" "}
+        </span>
+    });
+
+    useEffect(() => {
+      fetch(apiUrl + "/mythia.php/?req=" + "slider")
+          .then(response => response.json())
+          .then(data => {
+              setSliderImages(data)
+          })
+          .catch(console.log)
+  }, [setSliderImages])
+
+  useEffect(() => {
+    fetch(apiUrl + "/mythia.php/?req=" + "data")
+        .then(response => response.json())
+        .then((data) => {
+            setSupply(data.supply)
+            setPrice(data.price)
+            setMax(data.max)
+            setBarImage(data.bar_image)
+            setBackgroundImage(data.background_image)
+            setHeadContent(data.headcontent)
+            setTimerShow(data.timershow === "1" ? true : false)
+            setTimer(data.timer)
+
+            // Timer
+            const calculatedTimeLeft = calculateTimeLeft(data.timer)
+            setTimeLeft(calculatedTimeLeft)
+        })
+        .catch(console.log)
+}, [setTimeLeft])
+
       
-        timerComponents.push(
-          <span className="timer-inner">
-            {timeLeft[interval]} <br/>{interval}{" "}
-          </span>
-        );
-      });
 
     return(
 
@@ -239,46 +294,44 @@ function Home(){
 
             <div className="main-flex">
 
-                <Slider {...settings} className="slider">
-            
-                    <img src={slide1}/>
-                    <img src={slide2}/>
-                    <img src={slide3}/>
-                    <img src={slide4}/>
-                    <img src={slide5}/>
-                    <img src={slide6}/>
-
-                </Slider>
+            {sliderImages.length > 0 && (
+                        <Slider {...settings} className="slider">
+                            {sliderImages.map((image) => {
+                                return <img key={image.id} src={image.img_src}/>
+                            })}
+                        </Slider>
+                    )}
 
                 <div className="right-form">
 
-                    <h2>Special Price for Discord Members</h2>
-                    <h3>March 18 - 1am EST</h3>
+                      <h2>{headContent}</h2>
+                        <h3>{timer}</h3>
+
 
                     
-                    <div className="timer">
-                        <h2>{timerComponents.length ? timerComponents : <span>Mint Now</span>}</h2>
-                    </div>
+                        <div className="timer">
+                            {timerShow && <h2>{timerComponents} <span>Mint Now</span></h2>}
+                        </div>
                    
 
-                    <div className="supply-details">
+                        <div className="supply-details">
 
-                        <div>
-                            <p>Supply</p>
-                            <span>{supply}</span>
-                        </div>
+                            <div>
+                                <p>Supply</p>
+                                <span>{supplyy}</span>
+                            </div>
 
-                        <div>
-                            <p>Price</p>
-                            <span>0.11 ETH</span>
-                        </div>
+                            <div>
+                                <p>Price</p>
+                                <span>{price} ETH</span>
+                            </div>
 
-                        <div>
-                            <p>Max</p>
-                            <span>20 per Wallet</span>
-                        </div>
+                            <div>
+                                <p>Max</p>
+                                <span>{max}</span>
+                            </div>
 
-                    </div>
+                            </div>
 
                     <div className="form-box">
 
@@ -301,15 +354,15 @@ function Home(){
                             </div>
 
                             <div className="min-max">
-                                
-                                <div class="increament">
-                                    <div class="value-button decrease" id="decrease" value="Decrease Value" onClick={(e)=>decrease()}>-</div>
-                                    <input type="number" id="room-number" value={qty}  min="1" max="20" class="number" readOnly/>
-                                    <div class="value-button increase" id="increase" value="Increase Value" onClick={(e)=>increase()}>+</div>
-                                </div>
 
-                                
-                                <button className="custom-btn-sm">Set max</button>
+                              <div className="increament">
+                                  <div className="value-button decrease" id="decrease" value="Decrease Value" onClick={(e) => decrease()}>-</div>
+                                  <input type="number" id="room-number" value={qty} min="1" max="20" className="number" readOnly />
+                                  <div className="value-button increase" id="increase" value="Increase Value" onClick={(e) => increase()}>+</div>
+                              </div>
+
+
+                              <button className="custom-btn-sm">Set max</button>
 
                             </div>
 
@@ -374,6 +427,8 @@ function Home(){
                     </a> : console.log("sorry")
                       }
                 </div> */}
+
+               
         
 
                         {/* </form> */}

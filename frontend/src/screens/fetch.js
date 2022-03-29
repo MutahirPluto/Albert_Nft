@@ -1,34 +1,32 @@
-// const IPFS = require('ipfs');
-const OrbitDB = require('orbit-db');
-// const Identities = require('orbit-db-identity-provider');
+import React,{useEffect} from "react";
 
-const {create} = require('ipfs-http-client')
+const fetch = () => {
 
-const fetch = async () => {
-    const ipfs = create()
+    const y = () => {
+        const script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.7.1/dist/umd/index.min.js";
+           script.async = true;
+           let u = document.body.appendChild(script);
+            console.log("u", u)
 
-    const orbitdb = await OrbitDB.createInstance(ipfs)
-const db = await orbitdb.keyvalue("/orbitdb/zdpuArNcZBygSgw21NS4jbDouWdRxXi6eaqtJ9ymaqMDWA1nL/ox21test1")
-db.load()
-console.log(db.get("videourl"))
+            
+    }
+
+    y()
+
+    // useEffect(() => {
+    //     const script = document.createElement('script');
+      
+    //     script.src = "https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.7.1/dist/umd/index.min.js";
+    //     script.async = true;
+      
+    //     document.body.appendChild(script);
+      
+    //   }, []);
+
+    return(<div>
+        hello
+    </div>)
 }
-fetch()
 
 export default fetch
-
-
-// async function main() {
-
-// const ipfs = create()
-
-
-// const orbitdb = await OrbitDB.createInstance(ipfs)
-// const db = await orbitdb.keyvalue("/orbitdb/zdpuArNcZBygSgw21NS4jbDouWdRxXi6eaqtJ9ymaqMDWA1nL/ox21test1")
-// db.load()
-// console.log(db.get("videourl"))
-		
-    
-// }
-
-// main();
-
