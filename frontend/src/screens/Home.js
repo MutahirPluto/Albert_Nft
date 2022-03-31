@@ -380,7 +380,7 @@ function Home(){
                                 <span>/</span>
                                 <span>1000</span>
                             </div> */}
-
+{/* 
                             {
            networkError?<button type="button" className="btn-custom secondary-btn">Connect Wallet</button>:
            active 
@@ -409,13 +409,29 @@ function Home(){
                </div>
 
 
-              
 
-            // <div><button onClick={loadProvider} type="button" className="btn-custom secondary-btn">Connect Wallet</button>
+            ) 
+         } */}
+
+
+
+{
+           networkError?<button type="button" className="btn-custom secondary-btn">Connect Wallet</button>:
+           active 
+            ? (<div>
+              
+              <button type="button"  >Connected</button>
+              </div>)
+             : (
+             <div><button onClick={() => {
+              connectWallet(activate);
+            }} type="button" >Connect Wallet</button>
              
-            //  </div>
+            </div>
             ) 
          }
+
+
 
 
         {/* <div>
