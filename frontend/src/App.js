@@ -10,7 +10,8 @@ import Fetch from "./screens/fetch"
 function App() {
   return (
     <div className="App">
-     {isMobile == true ? <Mobile />  : <Home />}
+      <Home />
+     {/* {isMobile == true ? <Mobile />  : <Home />} */}
      {/* <Fetch /> */}
     {/* kk */}
     </div>
